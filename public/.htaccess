@@ -1,0 +1,24 @@
+#Block Direct access to Specific files
+<Files ".env">
+    Deny from all
+</Files>
+
+<Files "composer.json">
+    Deny from all
+</Files>
+
+<Files "composer.lock">
+    Deny from all
+</Files>
+
+Redirect 403 ^/vendor/.*$
+Redirect 403 ^/src/.*$
+
+# Nice URL and .php extension hide from URL
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^\.]+)$ $1.php [NC,L]

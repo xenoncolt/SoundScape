@@ -1,10 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
-        "./public/**/*.php",
-        "./src/**/*.php",
-        "./public/**/*.html",
-        "./public/**/*.js"
+        "./public/**/*.{php,html,js}",
+        "./src/**/*.{php,html,js}",
+        "./src/UI/**/*.php"
     ],
     theme: {
         extend: {
@@ -16,6 +15,8 @@ module.exports = {
         }
     },
     plugins: [
-        require('@tailwindcss/forms')
+        require('@tailwindcss/forms')({
+            strategy: 'class'
+        })
     ]
 }

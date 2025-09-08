@@ -53,4 +53,54 @@ function redirect(string $url): void {
 function isLoggedIn(): bool {
     return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
+
+function requiredLogin(): void {
+    if (!isLoggedIn()) {
+        $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
+        redirect('?page=login');
+    }
+}
+
+function getCurrentUser(): array {
+    if (!isLoggedIn()) {
+        return [];
+    }
+    return [
+        'id' => $_SESSION['user_id'],
+        'username' => $_SESSION['username'] ?? '',
+        'email' => $_SESSION['email'] ?? '',
+        'user_type' => $_SESSION['user_type'] ?? 'general',
+        'display_name' => $_SESSION['display_name'] ?? $_SESSION['username'] ?? '',
+        'pfp_img' => $_SESSION['pfp_img'] ?? null
+    ];
+}
+
+// Public routes
+
+// Setup routes
+
+// Auth routes
+
+// login required routes
+
+// admin routes
+
+// artist routes
+
+// music routes
+
+// error routes
+
+// API routes
+
+try {
+    $routes->dispatch();
+
+} catch (Exception $e) {
+    error_log('Router dispatch failed. Error: ' . $e->getMessage());
+    http_response_code(500);
+    echo '<h1>Something went wrong with server. Please stay tuned. It will be fixed soon.</h1>';
+}
+
+ob_end_flush();
 ?>

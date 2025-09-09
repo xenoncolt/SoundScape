@@ -13,7 +13,7 @@
   "license": "GPL-3.0-or-later",
   "author": "Xenon Colt",
   "scripts": {
-    "dev": "concurrently \"php -S localhost:80 -t public\" \"npm run watch-css\"",
+    "dev": "concurrently \"php -S localhost:4040 -t public\" \"npm run watch-css\"",
     "watch-css": "tailwindcss -i ./styles/input.css -o ./public/assets/css/styles.css --watch",
     "build": "tailwindcss -i ./styles/input.css -o ./public/assets/css/styles.css --minify"
   },

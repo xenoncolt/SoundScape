@@ -75,7 +75,20 @@ function getCurrentUser(): array {
     ];
 }
 
+$router = new Router();
+
+// let admin handle by ui 
+$databaseReady = false;
+$setupComplete = false;
+
 // Public routes
+$router->get('home', function(){
+    include __DIR__ . '/../src/UI/home.php';
+});
+
+$router->get('about', function(){
+    include __DIR__ . '/../src/UI/about.php';
+});
 
 // Setup routes
 
@@ -94,7 +107,7 @@ function getCurrentUser(): array {
 // API routes
 
 try {
-    $routes->dispatch();
+    $router->dispatch();
 
 } catch (Exception $e) {
     error_log('Router dispatch failed. Error: ' . $e->getMessage());

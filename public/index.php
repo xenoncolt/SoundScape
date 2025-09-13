@@ -86,10 +86,6 @@ $router->get('home', function(){
     include __DIR__ . '/../src/UI/home.php';
 });
 
-$router->get('about', function(){
-    include __DIR__ . '/../src/UI/about.php';
-});
-
 // Setup routes
 
 // Auth routes

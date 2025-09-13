@@ -4,3 +4,4 @@ public/assets/css/styles.css
 .env
 package-lock.json
 composer.lock
+composer.phar

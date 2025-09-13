@@ -87,11 +87,56 @@ $router->get('home', function(){
 });
 
 // Setup routes
+$router->get('setup', function() {
+    global $setupComplete;
+    if ($setupComplete) {
+        redirect('?page=home');
+    }
+    include __DIR__ . '/../src/UI/setup.php';
+});
+
+$router->post('complete-setup', function() {
+    global $setupComplete;
+    if ($setupComplete) {
+        redirect('?page=home');
+    }
+    include __DIR__ . '/../src/Controllers/SetupController.php';
+});
 
 // Auth routes
+$router->get('login', function() {
+    if (isLoggedIn()) {
+        redirect('?page=dashboard');
+    }
+    include __DIR__ . '/../src/UI/login.php';
+});
+
+$router->post('login', function() {
+    include __DIR__ . '/../src/Controllers/AuthController.php';
+});
+
+$router->get('register', function() {
+    if (isLoggedIn()) {
+        redirect('?page=dashboard');
+    }
+    include __DIR__ . '/../src/UI/register.php';
+});
+
+$router->post('register', function() {
+    include __DIR__ . '/../src/Controllers/AuthController.php';
+});
+
+$router->get('logout', function() {
+    session_unset();
+    session_destroy();
+    redirect('?page=home');
+});
 
 // login required routes
-
+$router->get('dashboard', function() {
+    requiredLogin();
+    include __DIR__ . '/../src/UI/dashboard.php';
+});
 // admin routes
 
 // artist routes

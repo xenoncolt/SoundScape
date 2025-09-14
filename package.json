@@ -1,6 +1,7 @@
 {
   "name": "soundscape",
   "version": "1.0.0",
+  "type": "commonjs",
   "description": "A self hosted music player and management website",
   "homepage": "https://github.com/xenoncolt/SoundScape#readme",
   "bugs": {

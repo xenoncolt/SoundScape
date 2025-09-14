@@ -29,7 +29,7 @@ unset($_SESSION['login_error'], $_SESSION['login_success']);
         
         <div class="text-center mb-8 animate-fade-in">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-cus rounded-full mb-4 shadow-cus">
-                <span class="text-2xl">🎵</span>
+                <img src="/assets/images/SOUNDSCAPE.svg" alt="Logo">
             </div>
             <h1 class="text-3xl font-bold text-white mb-2">Welcome Back</h1>
             <p class="text-cus-light-gray">Log in to your SoundScape account</p>

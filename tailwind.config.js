@@ -3,21 +3,21 @@ export default {
     content: [
         "./public/**/*.{php,html,js}",
         "./src/**/*.{php,html,js}",
-        "./src/UI/**/*.php"
+        "./src/UI/**/*.php",
+        "./src/UI/*.php",
+        "./styles/input.css"
     ],
     theme: {
         extend: {
             colors: {
-                cus: {
-                    primary: '#1db954',
-                    dark: '#191414',
-                    gray: '#535353',
-                    'light-gray': '#b3b3b3',
-                    hover: '#1ed760',
-                    black: '#000000',
-                    card: '#181818',
-                    sidebar: '#0a0a0a',
-                }
+                'cus-primary': '#1db954',
+                'cus-dark': '#191414',
+                'cus-gray': '#535353',
+                'cus-light-gray': '#b3b3b3',
+                'cus-hover': '#1ed760',
+                'cus-black': '#000000',
+                'cus-card': '#181818',
+                'cus-sidebar': '#0a0a0a',
             },
             backgroundImage: {
                 'gradient-cus': 'linear-gradient(135deg, #1db954 0%, #1ed760 100%)',
@@ -56,12 +56,12 @@ export default {
                 }
             },
             boxShadow: {
-                cus: '0 4px 60px rgba(29, 185, 84, 0.3)',
+                'cus': '0 4px 60px rgba(29, 185, 84, 0.3)',
                 'cus-lg': '0 10px 80px rgba(29, 185, 84, 0.4)',
             }
         }
     },
-    plugins: ["@tailwindcss/postcss",
+    plugins: [
         require('@tailwindcss/forms')({
             strategy: 'class'
         })

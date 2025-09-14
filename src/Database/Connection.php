@@ -22,7 +22,7 @@ class Connection {
         $this->connect();
     }
 
-    private static function getInstance(): self {
+    public static function getInstance(): self {
         return self::$instance ??= new self();
     }
 

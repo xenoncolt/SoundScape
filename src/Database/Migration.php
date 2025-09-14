@@ -6,8 +6,7 @@ use PDO;
 use Exception;
 use PDOException;
 
-class Migration
-{
+class Migration {
     private PDO $pdo;
     
     public function __construct()
@@ -15,15 +14,9 @@ class Migration
         $this->pdo = Connection::getInstance()->getConnection();
     }
     
-    /**
-     * Run all database migrations
-     * This creates all the tables your app needs
-     */
-    public function runMigrations(): void
-    {
-        echo "🚀 Starting database setup...\n";
+    public function runMigrations(): void {
+        echo "Starting database setup...\n";
         
-        // Create each table in order (order matters because of foreign keys)
         $this->createUsersTable();
         $this->createSongsTable();
         $this->createPlaylistsTable();
@@ -31,23 +24,10 @@ class Migration
         $this->createConfigTable();
         $this->createUserSessionsTable();
         
-        echo "✅ All database tables created successfully!\n";
+        echo "All database tables created successfully!\n";
     }
     
-    /**
-     * Create Users Table
-     * This stores all user accounts (admin, artist, general users)
-     * 
-     * Table Structure Explained:
-     * - id: Unique number for each user (Primary Key)
-     * - username: User's login name
-     * - email: User's email address
-     * - password_hash: Encrypted password (NEVER store plain passwords!)
-     * - user_type: admin/artist/general (determines permissions)
-     * - status: pending/approved/banned (account status)
-     */
-    private function createUsersTable(): void
-    {
+    private function createUsersTable(): void {
         $sql = "
             CREATE TABLE IF NOT EXISTS users (
                 -- Primary Key: Unique identifier for each user
@@ -94,22 +74,10 @@ class Migration
         ";
         
         $this->pdo->exec($sql);
-        echo "👥 Users table created\n";
+        echo "Users table created\n";
     }
     
-    /**
-     * Create Songs Table  
-     * This stores all music files and their information
-     * 
-     * Key Fields Explained:
-     * - artist_id: Links to users table (who uploaded this song)
-     * - file_path: Where the actual music file is stored
-     * - duration: Song length in seconds
-     * - is_public: Can other users see this song?
-     * - status: pending/approved/rejected (for moderation)
-     */
-    private function createSongsTable(): void
-    {
+    private function createSongsTable(): void {
         $sql = "
             CREATE TABLE IF NOT EXISTS songs (
                 -- Primary Key
@@ -172,20 +140,10 @@ class Migration
         ";
         
         $this->pdo->exec($sql);
-        echo "🎵 Songs table created\n";
+        echo "Songs table created\n";
     }
     
-    /**
-     * Create Playlists Table
-     * This stores user-created playlists (like Spotify playlists)
-     * 
-     * Key Concepts:
-     * - Playlist: A collection of songs organized by a user
-     * - is_public: Can other users see and follow this playlist?
-     * - is_collaborative: Can multiple users add songs to this playlist?
-     */
-    private function createPlaylistsTable(): void
-    {
+    private function createPlaylistsTable(): void {
         $sql = "
             CREATE TABLE IF NOT EXISTS playlists (
                 -- Primary Key
@@ -224,25 +182,10 @@ class Migration
         ";
         
         $this->pdo->exec($sql);
-        echo "📚 Playlists table created\n";
+        echo "Playlists table created\n";
     }
     
-    /**
-     * Create Playlist-Songs Relationship Table
-     * This connects playlists to songs (many-to-many relationship)
-     * 
-     * Why separate table?
-     * - One playlist can have many songs
-     * - One song can be in many playlists  
-     * - We need to track the ORDER of songs in each playlist
-     * 
-     * Example: "My Favorites" playlist might have:
-     * - Position 1: Song "Bohemian Rhapsody"
-     * - Position 2: Song "Stairway to Heaven" 
-     * - Position 3: Song "Hotel California"
-     */
-    private function createPlaylistSongsTable(): void
-    {
+    private function createPlaylistSongsTable(): void {
         $sql = "
             CREATE TABLE IF NOT EXISTS playlist_songs (
                 -- Composite Primary Key (combination must be unique)
@@ -275,18 +218,8 @@ class Migration
         $this->pdo->exec($sql);
         echo "🔗 Playlist-Songs relationship table created\n";
     }
-    
-    /**
-     * Create Configuration Table
-     * This stores system-wide settings (like WordPress options table)
-     * 
-     * Key-Value Storage:
-     * - key_name: Setting name (like "max_upload_size")
-     * - key_value: Setting value (like "50")
-     * - This allows adding new settings without changing database structure
-     */
-    private function createConfigTable(): void
-    {
+
+    private function createConfigTable(): void {
         $sql = "
             CREATE TABLE IF NOT EXISTS config (
                 key_name VARCHAR(100) PRIMARY KEY COMMENT 'Setting name (unique)',
@@ -305,23 +238,12 @@ class Migration
         
         $this->pdo->exec($sql);
         
-        // Insert default configuration values
         $this->insertDefaultConfig();
         
-        echo "⚙️ Configuration table created with default settings\n";
+        echo "Configuration table created with default settings\n";
     }
     
-    /**
-     * Create User Sessions Table
-     * This tracks active user sessions for security
-     * 
-     * Why track sessions?
-     * - Security: Know who's logged in and from where
-     * - User management: Admins can see active users
-     * - Session cleanup: Remove old/expired sessions
-     */
-    private function createUserSessionsTable(): void
-    {
+    private function createUserSessionsTable(): void {
         $sql = "
             CREATE TABLE IF NOT EXISTS user_sessions (
                 id VARCHAR(128) PRIMARY KEY COMMENT 'Session ID (random string)',
@@ -344,75 +266,52 @@ class Migration
         ";
         
         $this->pdo->exec($sql);
-        echo "🔐 User sessions table created\n";
+        echo "User sessions table created\n";
     }
     
-    /**
-     * Insert Default Configuration Values
-     * These are the initial settings for a new SoundScape installation
-     */
-    private function insertDefaultConfig(): void
-    {
+    private function insertDefaultConfig(): void {
         $configs = [
-            // Server Settings
             ['server_name', 'SoundScape Server', 'Server display name shown in UI', 'string', 1, 'server'],
             ['server_description', 'A self-hosted music streaming server', 'Server description', 'string', 1, 'server'],
             ['setup_completed', '0', 'Whether initial setup wizard is completed', 'boolean', 0, 'system'],
-            
-            // User Registration Settings
             ['allow_registration', '1', 'Allow new users to register accounts', 'boolean', 1, 'users'],
             ['require_email_verification', '0', 'Require email verification for new accounts', 'boolean', 1, 'users'],
             ['default_user_type', 'general', 'Default user type for new registrations', 'string', 1, 'users'],
             ['require_user_approval', '1', 'New users need admin approval before accessing system', 'boolean', 1, 'users'],
             ['require_artist_approval', '1', 'Artist accounts need admin approval before uploading', 'boolean', 1, 'users'],
-            
-            // Upload Settings
             ['max_upload_size', '50', 'Maximum file upload size in MB', 'integer', 1, 'uploads'],
             ['allowed_extensions', 'mp3,wav,flac,m4a,ogg,aac', 'Allowed audio file extensions (comma separated)', 'string', 1, 'uploads'],
             ['max_files_per_user', '100', 'Maximum files per user (0 = unlimited)', 'integer', 1, 'uploads'],
-            
-            // Music Settings
             ['allow_public_music', '1', 'Allow users to make music publicly visible', 'boolean', 1, 'music'],
             ['allow_playlist_sharing', '1', 'Allow users to share playlists publicly', 'boolean', 1, 'music'],
             ['default_music_visibility', 'private', 'Default visibility for new uploads (public/private)', 'string', 1, 'music'],
             ['enable_streaming', '1', 'Enable music streaming (vs download only)', 'boolean', 1, 'music'],
-            ['streaming_quality', '192', 'Default streaming quality in kbps', 'integer', 1, 'music'],
-            
-            // Security Settings  
+            ['streaming_quality', '192', 'Default streaming quality in kbps', 'integer', 1, 'music'], 
             ['session_lifetime', '7200', 'User session lifetime in seconds (2 hours)', 'integer', 1, 'security'],
             ['min_password_length', '6', 'Minimum password length for new accounts', 'integer', 1, 'security'],
             ['require_strong_password', '0', 'Require strong passwords (uppercase, numbers, symbols)', 'boolean', 1, 'security'],
             ['rate_limit_login', '5', 'Maximum login attempts per minute per IP', 'integer', 1, 'security'],
             ['rate_limit_upload', '10', 'Maximum uploads per minute per user', 'integer', 1, 'security'],
-            
-            // External Services
             ['discord_enabled', '0', 'Enable Discord OAuth login', 'boolean', 1, 'external'],
             ['smtp_enabled', '0', 'Enable SMTP email sending', 'boolean', 1, 'external'],
-            
-            // Features
             ['enable_comments', '1', 'Allow comments on songs and playlists', 'boolean', 1, 'features'],
             ['enable_likes', '1', 'Allow users to like songs and playlists', 'boolean', 1, 'features'],
             ['enable_following', '1', 'Allow users to follow other users', 'boolean', 1, 'features'],
         ];
         
-        // Prepare statement for inserting config values
+
         $stmt = $this->pdo->prepare("
             INSERT IGNORE INTO config (key_name, key_value, description, data_type, is_editable, category) 
             VALUES (?, ?, ?, ?, ?, ?)
         ");
         
-        // Insert each config value
+
         foreach ($configs as $config) {
             $stmt->execute($config);
         }
     }
-    
-    /**
-     * Check if initial setup is completed
-     * This determines if we should show the setup wizard
-     */
-    public function isSetupCompleted(): bool
-    {
+
+    public function isSetupCompleted(): bool {
         try {
             $stmt = $this->pdo->prepare("SELECT key_value FROM config WHERE key_name = 'setup_completed'");
             $stmt->execute();
@@ -420,17 +319,11 @@ class Migration
             
             return $result && $result['key_value'] === '1';
         } catch (Exception $e) {
-            // If config table doesn't exist or query fails, setup is not completed
             return false;
         }
     }
     
-    /**
-     * Mark setup as completed
-     * Called after successful setup wizard completion
-     */
-    public function markSetupCompleted(): void
-    {
+    public function markSetupCompleted(): void {
         $stmt = $this->pdo->prepare("
             INSERT INTO config (key_name, key_value, description, data_type, category) 
             VALUES ('setup_completed', '1', 'Setup wizard completed', 'boolean', 'system') 
@@ -439,12 +332,7 @@ class Migration
         $stmt->execute();
     }
     
-    /**
-     * Get configuration value
-     * Usage: $maxSize = Migration::getConfig('max_upload_size', 50);
-     */
-    public function getConfig(string $key, $default = null)
-    {
+    public function getConfig(string $key, $default = null){
         try {
             $stmt = $this->pdo->prepare("SELECT key_value, data_type FROM config WHERE key_name = ?");
             $stmt->execute([$key]);
@@ -454,7 +342,6 @@ class Migration
                 return $default;
             }
             
-            // Convert value based on data type
             switch ($result['data_type']) {
                 case 'boolean':
                     return (bool) $result['key_value'];
@@ -470,13 +357,7 @@ class Migration
         }
     }
     
-    /**
-     * Set configuration value
-     * Usage: Migration::setConfig('max_upload_size', 100);
-     */
-    public function setConfig(string $key, $value): void
-    {
-        // Convert value to string based on type
+    public function setConfig(string $key, $value): void {
         if (is_bool($value)) {
             $value = $value ? '1' : '0';
         } elseif (is_array($value)) {

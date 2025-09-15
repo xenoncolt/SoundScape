@@ -33,8 +33,8 @@ try {
             
             <div class="text-center mb-12 animate-fade-in">
                 <div class="mb-6">
-                    <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-music rounded-full mb-4 shadow-music">
-                        <span class="text-3xl animate-bounce-gentle">🎵</span>
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-4 shadow-music">
+                        <img src="/assets/images/SOUNDSCAPE.svg" alt="Logo">
                     </div>
                 </div>
                 

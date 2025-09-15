@@ -75,7 +75,27 @@ function getCurrentUser(): array {
     ];
 }
 
+function isDBReady() {
+    try {
+        if (!file_exists(__DIR__ . '/../.env')) {
+            return false;
+        }
+
+        $connection  = \App\Database\Connection::getInstance();
+        if(!$connection ->isConnected()) {
+            return false;
+        }
+
+        $migration = new \App\Database\Migration();
+        return $migration->isSetupCompleted();
+    } catch (Exception) {
+        return false;
+    }
+}
+
 $router = new Router();
+
+$dbReady = isDBReady();
 
 // let admin handle by ui 
 $databaseReady = false;
@@ -87,7 +107,9 @@ $router->get('home', function(){
 });
 
 // Setup routes
-$router->get('setup', function() {
+$router->get('setup', function() use ($dbReady) {
+    if ($dbReady) redirect('?page=home');
+
     global $setupComplete;
     if ($setupComplete) {
         redirect('?page=home');
@@ -95,7 +117,9 @@ $router->get('setup', function() {
     include __DIR__ . '/../src/UI/setup.php';
 });
 
-$router->post('complete-setup', function() {
+$router->post('complete-setup', function() use ($dbReady) {
+    if ($dbReady) redirect('?page=home');
+
     global $setupComplete;
     if ($setupComplete) {
         redirect('?page=home');
@@ -104,26 +128,50 @@ $router->post('complete-setup', function() {
 });
 
 // Auth routes
-$router->get('login', function() {
+$router->get('login', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+
     if (isLoggedIn()) {
         redirect('?page=dashboard');
     }
     include __DIR__ . '/../src/UI/login.php';
 });
 
-$router->post('login', function() {
-    include __DIR__ . '/../src/Controllers/AuthController.php';
+$router->post('login', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+
+    $controller = new \App\Controllers\AuthController();
+    $controller->handle('login');
 });
 
-$router->get('register', function() {
+$router->get('register', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+
+
     if (isLoggedIn()) {
         redirect('?page=dashboard');
     }
     include __DIR__ . '/../src/UI/register.php';
 });
 
-$router->post('register', function() {
-    include __DIR__ . '/../src/Controllers/AuthController.php';
+$router->post('register', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+
+    $controller = new \App\Controllers\AuthController();
+    $controller->handle('register');
+    
 });
 
 $router->get('logout', function() {
@@ -133,7 +181,12 @@ $router->get('logout', function() {
 });
 
 // login required routes
-$router->get('dashboard', function() {
+$router->get('dashboard', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+    
     requiredLogin();
     include __DIR__ . '/../src/UI/dashboard.php';
 });
@@ -148,12 +201,35 @@ $router->get('dashboard', function() {
 // API routes
 
 try {
+    $currentPage = $_GET['page'] ?? 'home';
+    $setupPages = ['home', 'setup', 'complete-setup'];
+
+    if (!$dbReady && !in_array($currentPage, $setupPages)) {
+        redirect('?page=setup');
+    }
+
     $router->dispatch();
 
 } catch (Exception $e) {
     error_log('Router dispatch failed. Error: ' . $e->getMessage());
     http_response_code(500);
-    echo '<h1>Something went wrong with server. Please stay tuned. It will be fixed soon.</h1>';
+    echo '<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Server Error | SoundScape</title>
+        <link href="assets/css/styles.css" rel="stylesheet">
+    </head>
+    <body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold mb-4">🚫 Server Error</h1>
+            <p class="text-gray-400 mb-6">Something went wrong with the server.</p>
+            <a href="?page=home" class="inline-block px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg transition-colors">
+                🏠 Back to Home
+            </a>
+        </div>
+    </body>
+    </html>';
 }
 
 ob_end_flush();

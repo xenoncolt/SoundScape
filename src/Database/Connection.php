@@ -91,11 +91,10 @@ class Connection {
     private function connect() {
         try {
             $dbs = sprintf(
-                'mysql:host=%s;port=%d;dbname=%s;charset=%s',
+                'mysql:host=%s;port=%d;charset=%s',
 
                 $this -> host,
                 $this -> port,                
-                $this -> dbname,
                 $this -> charset
             );
 
@@ -104,11 +103,29 @@ class Connection {
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
                 PDO::ATTR_PERSISTENT => false,
-                PDO::ATTR_TIMEOUT => 10,
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$this->charset} COLLATE {$this->charset}_unicode_ci"
+                PDO::ATTR_TIMEOUT => 10
             ];
 
+            $tempDB = new PDO($dbs, $this->username, $this->password, $options);
+
+            try {
+                $tempDB->exec("CREATE DATABASE IF NOT EXISTS `{$this->dbname}` CHARACTER SET {$this->charset} COLLATE {$this->charset}_unicode_ci");
+                $tempDB->exec("USE `{$this->dbname}`");
+            } catch (PDOException $e) {
+                error_log("Database creation/selection failed: " . $e->getMessage());
+            }
+
+            $dbs = sprintf(
+                'mysql:host=%s;port=%d;dbname=%s;charset=%s',
+                $this->host,
+                $this->port,
+                $this->dbname,
+                $this->charset
+            );
+
+
             $this  -> db = new PDO($dbs, $this -> username, $this-> password, $options);
+            $this ->db ->exec("SET NAMES {$this->charset} COLLATE {$this->charset}_unicode_ci");
             $this-> db->exec("SET sql_mode=(SELECT CONCAT(@@sql_mode,',ONLY_FULL_GROUP_BY'))"); // Better SQL mode for strictness.. got this on PDO docs
         } catch (PDOException $e) {
             $this -> handleConnectionErr($e);
@@ -159,6 +176,13 @@ class Connection {
     public function getConnection() {
         if ($this->db === null) {
             throw new Exception('Database connection not successful');
+        }
+        return $this->db;
+    }
+
+    public function isConnected() {
+        if ($this->db === null) {
+            throw new Exception('DB connection error.. something wrong when connecting to db');
         }
         return $this->db;
     }

@@ -2,6 +2,114 @@
 
 @layer theme, base, components, utilities;
 
+/* Custom CSS Variables for Colors */
+@layer base {
+  :root {
+    --cus-primary: #1db954;
+    --cus-dark: #191414;
+    --cus-gray: #535353;
+    --cus-light-gray: #b3b3b3;
+    --cus-hover: #1ed760;
+    --cus-black: #000000;
+    --cus-card: #181818;
+    --cus-sidebar: #0a0a0a;
+  }
+}
+
+/* Custom Color Classes */
+@layer components {
+  /* Background Colors */
+  .bg-cus-primary { background-color: var(--cus-primary); }
+  .bg-cus-dark { background-color: var(--cus-dark); }
+  .bg-cus-gray { background-color: var(--cus-gray); }
+  .bg-cus-light-gray { background-color: var(--cus-light-gray); }
+  .bg-cus-hover { background-color: var(--cus-hover); }
+  .bg-cus-black { background-color: var(--cus-black); }
+  .bg-cus-card { background-color: var(--cus-card); }
+  .bg-cus-sidebar { background-color: var(--cus-sidebar); }
+  
+  /* Text Colors */
+  .text-cus-primary { color: var(--cus-primary); }
+  .text-cus-dark { color: var(--cus-dark); }
+  .text-cus-gray { color: var(--cus-gray); }
+  .text-cus-light-gray { color: var(--cus-light-gray); }
+  .text-cus-hover { color: var(--cus-hover); }
+  .text-cus-black { color: var(--cus-black); }
+  .text-cus-card { color: var(--cus-card); }
+  .text-cus-sidebar { color: var(--cus-sidebar); }
+  
+  /* Border Colors */
+  .border-cus-primary { border-color: var(--cus-primary); }
+  .border-cus-dark { border-color: var(--cus-dark); }
+  .border-cus-gray { border-color: var(--cus-gray); }
+  .border-cus-light-gray { border-color: var(--cus-light-gray); }
+  .border-cus-hover { border-color: var(--cus-hover); }
+  .border-cus-black { border-color: var(--cus-black); }
+  .border-cus-card { border-color: var(--cus-card); }
+  .border-cus-sidebar { border-color: var(--cus-sidebar); }
+  
+  /* Custom Gradients */
+  .bg-gradient-cus {
+    background: linear-gradient(135deg, var(--cus-primary) 0%, var(--cus-hover) 100%);
+  }
+  
+  /* Custom Buttons */
+  /* .btn-primary {
+    @apply bg-cus-primary hover:bg-cus-hover text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 inline-block text-center;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-cus-primary text-cus-primary hover:bg-cus-primary hover:text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block text-center;
+  }
+   */
+  /* Navigation Items */
+  .nav-item {
+    @apply text-gray-300 hover:text-white transition-colors duration-200 font-medium;
+  }
+  
+  /* Form Elements */
+  .form-label {
+    @apply block text-sm font-medium text-gray-300 mb-2;
+  }
+  
+  /* .form-input {
+    @apply w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cus-primary focus:border-transparent transition-all;
+  } */
+  
+  /* Card Components */
+  /* .card {
+    @apply bg-cus-card border border-gray-700 rounded-xl shadow-2xl overflow-hidden;
+  } */
+  
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-700;
+  }
+  
+  .card-body {
+    @apply p-6;
+  }
+  
+  /* Shadow Effects */
+  .shadow-cus {
+    box-shadow: 0 4px 60px rgba(29, 185, 84, 0.3);
+  }
+  
+  .shadow-cus-lg {
+    box-shadow: 0 10px 80px rgba(29, 185, 84, 0.4);
+  }
+  
+  /* Loading Spinner */
+  .loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #374151;
+    border-top: 2px solid var(--cus-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+/* Custom Animations */
 @layer utilities {
   .animation-delay-2000 {
     animation-delay: 2s;
@@ -9,5 +117,102 @@
   
   .animation-delay-4000 {
     animation-delay: 4s;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .animate-slide-down {
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  .animate-bounce-gentle {
+    animation: bounceGentle 2s infinite;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s infinite;
+  }
+  
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+  0% { 
+    transform: translateY(20px); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slideDown {
+  0% { 
+    transform: translateY(-20px); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes bounceGentle {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Focus States */
+/* @layer utilities {
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-cus-primary focus:ring-opacity-50;
+  }
+} */
+
+/* Custom Scrollbar */
+@layer base {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--cus-dark);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--cus-gray);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--cus-primary);
   }
 }

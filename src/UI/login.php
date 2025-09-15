@@ -28,7 +28,7 @@ unset($_SESSION['login_error'], $_SESSION['login_success']);
     <div class="relative w-full max-w-md mx-auto px-4">
         
         <div class="text-center mb-8 animate-fade-in">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-cus rounded-full mb-4 shadow-cus">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 shadow-cus">
                 <img src="/assets/images/SOUNDSCAPE.svg" alt="Logo">
             </div>
             <h1 class="text-3xl font-bold text-white mb-2">Welcome Back</h1>
@@ -113,7 +113,6 @@ unset($_SESSION['login_error'], $_SESSION['login_success']);
                 
                 <button type="submit" 
                         class="w-full bg-gradient-cus hover:shadow-cus-lg text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2">
-                    <span>🎵</span>
                     <span>Log In</span>
                 </button>
                 

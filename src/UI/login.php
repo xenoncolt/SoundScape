@@ -55,7 +55,7 @@ unset($_SESSION['login_error'], $_SESSION['login_success']);
                 </div>
             <?php endif; ?>
             
-            <form method="POST" action="?page=login<?= $redirect ? '&redirect=' . urlencode($redirect) : '' ?>" class="space-y-6">
+            <form method="POST" action="?page=dashboard<?= $redirect ? '&redirect=' . urlencode($redirect) : '' ?>" class="space-y-6">
                 
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-300 mb-2">

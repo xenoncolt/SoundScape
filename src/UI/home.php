@@ -22,7 +22,7 @@ $isLoggedIn = isLoggedIn();
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-cus rounded-full flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center">
                         <img src="/assets/images/SOUNDSCAPE.svg" alt="Logo">
                     </div>
                     <div>
@@ -209,7 +209,7 @@ $isLoggedIn = isLoggedIn();
                 
                 <div class="md:col-span-2">
                     <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 bg-gradient-cus rounded-full flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center">
                             <img src="/assets/images/SOUNDSCAPE.svg" alt="Logo">
                         </div>
                         <div>

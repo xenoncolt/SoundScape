@@ -27,24 +27,31 @@ class Connection {
     }
 
     private function loadConfig() {
-        if ($this->tryLoadFromDB()) {
-            return;
-        }
+        // if ($this->tryLoadFromDB()) {
+        //     return;
+        // }
         
-        $this->loadFromEnv();  // 1st try dbconfig then env then default
+        $this->loadEnvFile();  // 1st try dbconfig then env then default
+
+        $this->host = $_ENV["DB_HOST"] ?? 'localhost';
+        $this->port = (int)($_ENV['DB_PORT'] ?? 3306);
+        $this->dbname = $_ENV['DB_NAME'] ?? 'soundscape';
+        $this->username = $_ENV['DB_USER'] ?? 'root'; 
+        $this->password = $_ENV['DB_PASSWORD'] ?? '';
+        $this->charset = $_ENV['DB_CHARSET'] ?? 'utf8mb4';
     }
 
-    private function tryLoadFromDB() {
-        try {
-            if (!$this->isSetupMode()) {
-                return false;
-            }
+    // private function tryLoadFromDB() {
+    //     try {
+    //         if (!$this->isSetupMode()) {
+    //             return false;
+    //         }
 
-            return false;
-        } catch (Exception) {
-            return false;
-        }
-    }
+    //         return false;
+    //     } catch (Exception) {
+    //         return false;
+    //     }
+    // }
 
     private function isSetupMode()  {
         return !file_exists(__DIR__ . '/../../.env') || !isset($_ENV['SETUP_COMPLETE']) || $_ENV['SETUP_COMPLETE'] !== 'true';
@@ -68,12 +75,13 @@ class Connection {
                 continue;
             }
 
-            if (str_contains($line, '=')) { // this is divided KEY=VALUE
+            if (str_contains($line, '=')) {
                 [$key, $value] = explode('=', $line, 2);
                 $key = trim($key);
-                $value = trim($value);
+                $value = trim($value, " \t\n\r\0\x0B\"'"); 
                 
                 $_ENV[$key] = $value;
+                putenv("$key=$value");
             }
         }
     }

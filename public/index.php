@@ -108,22 +108,28 @@ $router->get('home', function(){
 
 // Setup routes
 $router->get('setup', function() use ($dbReady) {
-    if ($dbReady) redirect('?page=home');
-
-    global $setupComplete;
-    if ($setupComplete) {
-        redirect('?page=home');
+    if ($dbReady) {
+        redirect('?page=home'); 
+        return;
     }
+
+    // global $setupComplete;
+    // if ($setupComplete) {
+    //     redirect('?page=home');
+    // }
     include __DIR__ . '/../src/UI/setup.php';
 });
 
 $router->post('complete-setup', function() use ($dbReady) {
-    if ($dbReady) redirect('?page=home');
-
-    global $setupComplete;
-    if ($setupComplete) {
-        redirect('?page=home');
+    if ($dbReady) {
+        redirect('?page=home'); 
+        return;
     }
+
+    // global $setupComplete;
+    // if ($setupComplete) {
+    //     redirect('?page=home');
+    // }
     include __DIR__ . '/../src/Controllers/SetupController.php';
 });
 
@@ -146,8 +152,7 @@ $router->post('login', function() use ($dbReady) {
         return;
     }
 
-    $controller = new \App\Controllers\AuthController();
-    $controller->handle('login');
+    include __DIR__ . '/../src/Controllers/AuthController.php';
 });
 
 $router->get('register', function() use ($dbReady) {
@@ -169,8 +174,7 @@ $router->post('register', function() use ($dbReady) {
         return;
     }
 
-    $controller = new \App\Controllers\AuthController();
-    $controller->handle('register');
+    include __DIR__ . '/../src/Controllers/AuthController.php';
     
 });
 

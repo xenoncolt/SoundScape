@@ -1,116 +1,199 @@
 @import "tailwindcss";
 
-@layer theme, base, components, utilities;
+/* ===================================
+   SOUNDSCAPE CUSTOM STYLES
+   Using proper TailwindCSS approach
+   =================================== */
 
-/* Custom CSS Variables for Colors */
 @layer base {
+  /* Root CSS Variables */
   :root {
-    --cus-primary: #1db954;
-    --cus-dark: #191414;
-    --cus-gray: #535353;
-    --cus-light-gray: #b3b3b3;
-    --cus-hover: #1ed760;
-    --cus-black: #000000;
-    --cus-card: #181818;
-    --cus-sidebar: #0a0a0a;
+    --color-cus-primary: 29 185 84;     /* #1db954 in RGB */
+    --color-cus-dark: 25 20 20;         /* #191414 in RGB */
+    --color-cus-gray: 83 83 83;         /* #535353 in RGB */
+    --color-cus-light-gray: 179 179 179; /* #b3b3b3 in RGB */
+    --color-cus-hover: 30 215 96;       /* #1ed760 in RGB */
+    --color-cus-black: 0 0 0;           /* #000000 in RGB */
+    --color-cus-card: 24 24 24;         /* #181818 in RGB */
+    --color-cus-sidebar: 10 10 10;      /* #0a0a0a in RGB */
   }
 }
 
-/* Custom Color Classes */
 @layer components {
-  /* Background Colors */
-  .bg-cus-primary { background-color: var(--cus-primary); }
-  .bg-cus-dark { background-color: var(--cus-dark); }
-  .bg-cus-gray { background-color: var(--cus-gray); }
-  .bg-cus-light-gray { background-color: var(--cus-light-gray); }
-  .bg-cus-hover { background-color: var(--cus-hover); }
-  .bg-cus-black { background-color: var(--cus-black); }
-  .bg-cus-card { background-color: var(--cus-card); }
-  .bg-cus-sidebar { background-color: var(--cus-sidebar); }
+  /* ===================================
+     BUTTON COMPONENTS
+     =================================== */
   
-  /* Text Colors */
-  .text-cus-primary { color: var(--cus-primary); }
-  .text-cus-dark { color: var(--cus-dark); }
-  .text-cus-gray { color: var(--cus-gray); }
-  .text-cus-light-gray { color: var(--cus-light-gray); }
-  .text-cus-hover { color: var(--cus-hover); }
-  .text-cus-black { color: var(--cus-black); }
-  .text-cus-card { color: var(--cus-card); }
-  .text-cus-sidebar { color: var(--cus-sidebar); }
-  
-  /* Border Colors */
-  .border-cus-primary { border-color: var(--cus-primary); }
-  .border-cus-dark { border-color: var(--cus-dark); }
-  .border-cus-gray { border-color: var(--cus-gray); }
-  .border-cus-light-gray { border-color: var(--cus-light-gray); }
-  .border-cus-hover { border-color: var(--cus-hover); }
-  .border-cus-black { border-color: var(--cus-black); }
-  .border-cus-card { border-color: var(--cus-card); }
-  .border-cus-sidebar { border-color: var(--cus-sidebar); }
-  
-  /* Custom Gradients */
-  .bg-gradient-cus {
-    background: linear-gradient(135deg, var(--cus-primary) 0%, var(--cus-hover) 100%);
+  .btn-primary {
+    @apply inline-block px-6 py-3 rounded-lg font-bold text-white text-center transition-all duration-300 transform hover:scale-105;
+    background: linear-gradient(135deg, rgb(var(--color-cus-primary)) 0%, rgb(var(--color-cus-hover)) 100%);
+    box-shadow: 0 4px 60px rgba(var(--color-cus-primary), 0.3);
   }
   
-  /* Custom Buttons */
-  /* .btn-primary {
-    @apply bg-cus-primary hover:bg-cus-hover text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 inline-block text-center;
+  .btn-primary:hover {
+    box-shadow: 0 10px 80px rgba(var(--color-cus-primary), 0.4);
   }
   
   .btn-outline {
-    @apply border-2 border-cus-primary text-cus-primary hover:bg-cus-primary hover:text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block text-center;
-  }
-   */
-  /* Navigation Items */
-  .nav-item {
-    @apply text-gray-300 hover:text-white transition-colors duration-200 font-medium;
+    @apply inline-block px-6 py-3 rounded-lg font-bold text-center transition-all duration-300 border-2;
+    color: rgb(var(--color-cus-primary));
+    border-color: rgb(var(--color-cus-primary));
   }
   
-  /* Form Elements */
+  .btn-outline:hover {
+    background-color: rgb(var(--color-cus-primary));
+    @apply text-white;
+  }
+
+  /* ===================================
+     FORM COMPONENTS
+     =================================== */
+  
   .form-label {
-    @apply block text-sm font-medium text-gray-300 mb-2;
+    @apply block text-sm font-medium mb-2;
+    color: rgb(179 179 179); /* gray-300 equivalent */
   }
   
-  /* .form-input {
-    @apply w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cus-primary focus:border-transparent transition-all;
-  } */
+  .form-input {
+    @apply w-full px-4 py-3 rounded-lg text-white transition-all;
+    background-color: rgb(55 65 81); /* gray-700 */
+    border: 1px solid rgb(75 85 99); /* gray-600 */
+    color: white;
+  }
   
-  /* Card Components */
-  /* .card {
-    @apply bg-cus-card border border-gray-700 rounded-xl shadow-2xl overflow-hidden;
-  } */
+  .form-input::placeholder {
+    @apply text-gray-400;
+  }
+  
+  .form-input:focus {
+    @apply outline-none ring-2 border-transparent;
+    ring-color: rgba(var(--color-cus-primary), 0.5);
+  }
+
+  /* ===================================
+     CARD COMPONENTS
+     =================================== */
+  
+  .card {
+    @apply rounded-xl shadow-2xl overflow-hidden border;
+    background-color: rgb(var(--color-cus-card));
+    border-color: rgb(75 85 99); /* gray-700 */
+  }
   
   .card-header {
-    @apply px-6 py-4 border-b border-gray-700;
+    @apply px-6 py-4 border-b;
+    border-color: rgb(75 85 99); /* gray-700 */
   }
   
   .card-body {
     @apply p-6;
   }
+
+  /* ===================================
+     NAVIGATION COMPONENTS
+     =================================== */
   
-  /* Shadow Effects */
+  .nav-item {
+    @apply font-medium transition-colors duration-200;
+    @apply text-gray-300 hover:text-white;
+  }
+
+  /* ===================================
+     GRADIENT BACKGROUNDS
+     =================================== */
+  
+  .bg-gradient-cus {
+    background: linear-gradient(135deg, rgb(var(--color-cus-primary)) 0%, rgb(var(--color-cus-hover)) 100%);
+  }
+  
+  .bg-gradient-music {
+    background: linear-gradient(135deg, rgb(var(--color-cus-primary)) 0%, rgb(var(--color-cus-hover)) 100%);
+  }
+
+  /* ===================================
+     SHADOW EFFECTS
+     =================================== */
+  
   .shadow-cus {
-    box-shadow: 0 4px 60px rgba(29, 185, 84, 0.3);
+    box-shadow: 0 4px 60px rgba(var(--color-cus-primary), 0.3);
   }
   
   .shadow-cus-lg {
-    box-shadow: 0 10px 80px rgba(29, 185, 84, 0.4);
+    box-shadow: 0 10px 80px rgba(var(--color-cus-primary), 0.4);
   }
   
-  /* Loading Spinner */
+  .shadow-music {
+    box-shadow: 0 4px 60px rgba(var(--color-cus-primary), 0.3);
+  }
+  
+  .shadow-music-lg {
+    box-shadow: 0 10px 80px rgba(var(--color-cus-primary), 0.4);
+  }
+
+  /* ===================================
+     LOADING SPINNER
+     =================================== */
+  
   .loading-spinner {
     width: 16px;
     height: 16px;
-    border: 2px solid #374151;
-    border-top: 2px solid var(--cus-primary);
+    border: 2px solid rgb(55 65 81); /* gray-700 */
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    border-top-color: rgb(var(--color-cus-primary));
   }
 }
 
-/* Custom Animations */
 @layer utilities {
+  /* ===================================
+     BACKGROUND COLOR UTILITIES
+     =================================== */
+  
+  .bg-cus-primary { background-color: rgb(var(--color-cus-primary)); }
+  .bg-cus-dark { background-color: rgb(var(--color-cus-dark)); }
+  .bg-cus-gray { background-color: rgb(var(--color-cus-gray)); }
+  .bg-cus-light-gray { background-color: rgb(var(--color-cus-light-gray)); }
+  .bg-cus-hover { background-color: rgb(var(--color-cus-hover)); }
+  .bg-cus-black { background-color: rgb(var(--color-cus-black)); }
+  .bg-cus-card { background-color: rgb(var(--color-cus-card)); }
+  .bg-cus-sidebar { background-color: rgb(var(--color-cus-sidebar)); }
+  
+  /* Music theme aliases */
+  .bg-music-dark { background-color: rgb(var(--color-cus-dark)); }
+  .bg-music-primary { background-color: rgb(var(--color-cus-primary)); }
+  .bg-music-card { background-color: rgb(var(--color-cus-card)); }
+
+  /* ===================================
+     TEXT COLOR UTILITIES
+     =================================== */
+  
+  .text-cus-primary { color: rgb(var(--color-cus-primary)); }
+  .text-cus-dark { color: rgb(var(--color-cus-dark)); }
+  .text-cus-gray { color: rgb(var(--color-cus-gray)); }
+  .text-cus-light-gray { color: rgb(var(--color-cus-light-gray)); }
+  .text-cus-hover { color: rgb(var(--color-cus-hover)); }
+  .text-cus-black { color: rgb(var(--color-cus-black)); }
+  .text-cus-card { color: rgb(var(--color-cus-card)); }
+  .text-cus-sidebar { color: rgb(var(--color-cus-sidebar)); }
+  
+  /* Music theme aliases */
+  .text-music-primary { color: rgb(var(--color-cus-primary)); }
+  .text-music-gray { color: rgb(var(--color-cus-gray)); }
+  .text-music-light-gray { color: rgb(var(--color-cus-light-gray)); }
+
+  /* ===================================
+     BORDER COLOR UTILITIES
+     =================================== */
+  
+  .border-cus-primary { border-color: rgb(var(--color-cus-primary)); }
+  .border-cus-dark { border-color: rgb(var(--color-cus-dark)); }
+  .border-cus-gray { border-color: rgb(var(--color-cus-gray)); }
+  .border-cus-hover { border-color: rgb(var(--color-cus-hover)); }
+
+  /* ===================================
+     ANIMATION UTILITIES
+     =================================== */
+  
   .animation-delay-2000 {
     animation-delay: 2s;
   }
@@ -138,6 +221,10 @@
   .animate-pulse-slow {
     animation: pulse 3s infinite;
   }
+
+  /* ===================================
+     TEXT SHADOW UTILITIES
+     =================================== */
   
   .text-shadow {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -148,7 +235,10 @@
   }
 }
 
-/* Keyframe Animations */
+/* ===================================
+   KEYFRAME ANIMATIONS
+   =================================== */
+
 @keyframes fadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
@@ -190,29 +280,23 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Focus States */
-/* @layer utilities {
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-cus-primary focus:ring-opacity-50;
-  }
-} */
+/* ===================================
+   SCROLLBAR STYLING
+   =================================== */
 
-/* Custom Scrollbar */
-@layer base {
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: var(--cus-dark);
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: var(--cus-gray);
-    border-radius: 4px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--cus-primary);
-  }
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--color-cus-dark));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-cus-gray));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--color-cus-primary));
 }

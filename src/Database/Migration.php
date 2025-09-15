@@ -311,25 +311,36 @@ class Migration {
         }
     }
 
-    public function isSetupCompleted(): bool {
+    public function isSetupCompleted() {
         try {
-            $stmt = $this->pdo->prepare("SELECT key_value FROM config WHERE key_name = 'setup_completed'");
-            $stmt->execute();
-            $result = $stmt->fetch();
-            
+            $user = $this->pdo->query("SHOW TABLES LIKE 'config'");
+            if ($user->rowCount() === 0) {
+                return false;
+            }
+
+            $user = $this->pdo->prepare("SELECT key_value FROM config WHERE key_name = 'setup_completed' LIMIT 1");
+            $user ->execute();
+            $result = $user -> fetch();
+
             return $result && $result['key_value'] === '1';
         } catch (Exception $e) {
+            error_log('Setup complete check failed ' . $e-> getMessage());
             return false;
         }
     }
     
     public function markSetupCompleted(): void {
-        $stmt = $this->pdo->prepare("
+        try {
+            $query = $this->pdo->prepare("
             INSERT INTO config (key_name, key_value, description, data_type, category) 
             VALUES ('setup_completed', '1', 'Setup wizard completed', 'boolean', 'system') 
-            ON DUPLICATE KEY UPDATE key_value = '1'
+            ON DUPLICATE KEY UPDATE key_value = '1', updated_at = CURRENT_TIMESTAMP
         ");
-        $stmt->execute();
+        $query->execute();
+        }  catch (Exception $e) {
+            error_log('Failed to mark setup as a complete ' . $e -> getMessage());
+            throw $e;
+        }
     }
     
     public function getConfig(string $key, $default = null){

@@ -5,3 +5,4 @@ public/assets/css/styles.css
 package-lock.json
 composer.lock
 composer.phar
+public/assets/uploads

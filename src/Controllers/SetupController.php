@@ -116,6 +116,7 @@ class SetupController {
             'discord_enabled' => isset($_POST['discord_enabled']),
             'discord_client_id' => trim($_POST['discord_client_id'] ?? ''),
             'discord_client_secret' => trim($_POST['discord_client_secret'] ?? ''),
+            'discord_redirect_uri' => $this->generateDiscordRedirectUri(),
             'smtp_enabled' => isset($_POST['smtp_enabled']),
             'smtp_host' => trim($_POST['smtp_host'] ?? ''),
             'smtp_port' => intval($_POST['smtp_port'] ?? 587),
@@ -432,6 +433,7 @@ class SetupController {
             ['discord_enabled', $formData['api']['discord_enabled'] ? '1' : '0', 'Enable Discord OAuth login', 'boolean', 'external'],
             ['discord_client_id', $formData['api']['discord_client_id'], 'Discord Client ID', 'string', 'external'],
             ['discord_client_secret', $formData['api']['discord_client_secret'], 'Discord Client Secret', 'string', 'external'],
+            ['discord_redirect_uri', $formData['api']['discord_redirect_uri'], 'Discord OAuth redirect URI', 'string', 'external'],
             ['smtp_enabled', $formData['api']['smtp_enabled'] ? '1' : '0', 'Enable SMTP email sending', 'boolean', 'external'],
             ['smtp_host', $formData['api']['smtp_host'], 'SMTP server host', 'string', 'external'],
             ['smtp_port', $formData['api']['smtp_port'], 'SMTP server port', 'integer', 'external'],
@@ -579,6 +581,12 @@ class SetupController {
     private function redirect(string $url): void {
         header('Location: ' . $url);
         exit;
+    }
+    
+    private function generateDiscordRedirectUri(): string {
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        return $protocol . '://' . $host . '?page=discord-callback';
     }
 }
 

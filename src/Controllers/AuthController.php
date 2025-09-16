@@ -34,12 +34,12 @@ class AuthController {
             return;
         }
 
-        $sqlQuery = $this->db-> prepare('
-        SELECT id, username, email, password_hash, user_type, status, display_name, profile_image
+        $sqlQuery = $this->db->prepare('
+            SELECT id, username, email, password_hash, user_type, status, display_name, profile_image
             FROM users
-            WHERE username = :ident OR email = :ident
+            WHERE username = ? OR email = ?
             LIMIT 1');
-        $sqlQuery->execute(['ident'=>$identifier]);
+        $sqlQuery->execute([$identifier, $identifier]);
         $user = $sqlQuery->fetch();
 
         if (!$user || !password_verify($pass, $user['password_hash'])) {
@@ -156,7 +156,7 @@ class AuthController {
      private function getConfigBool(string $key, bool $default) {
         try {
             $userQuery = $this->db->prepare(
-                'SELECT key_value FROM config WHERE key_name = ? LIMIT 1',
+                'SELECT key_value FROM config WHERE key_name = ? LIMIT 1'
             );
             $userQuery->execute([$key]);
             $userVal = $userQuery->fetchColumn();

@@ -177,7 +177,7 @@ $isLoggedIn = isLoggedIn();
                                         <path d="M8 5v14l11-7z"/>
                                     </svg>
                                 </div>
-                                <p class="text-cus-gray">Demo video coming soon</p>
+                                <p class="text-cus-gray">Lemme Finished first meh</p>
                             </div>
                         </div>
                     </div>
@@ -244,7 +244,6 @@ $isLoggedIn = isLoggedIn();
                     </ul>
                 </div>
                 
-                <!-- Support Column -->
                 <div>
                     <h4 class="text-white font-semibold mb-4">Support</h4>
                     <ul class="space-y-2">

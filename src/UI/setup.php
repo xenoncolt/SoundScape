@@ -710,9 +710,9 @@ try {
             <!-- Footer Information -->
             <div class="text-center mt-8">
                 <p class="text-music-gray text-sm mb-4">
-                    This setup will create your database tables, admin account, and configure your server.
+                    This setup will create database tables, admin account, and configure server.
                     <br>
-                    Make sure your MySQL server is running and accessible before proceeding.
+                    By the way, MySQL database server required to run this website. 
                 </p>
                 
                 <div class="flex justify-center space-x-6 text-sm">

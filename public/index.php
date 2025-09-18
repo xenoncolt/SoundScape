@@ -152,7 +152,8 @@ $router->post('login', function() use ($dbReady) {
         return;
     }
 
-    include __DIR__ . '/../src/Controllers/AuthController.php';
+    $authController = new \App\Controllers\AuthController();
+    $authController->handle('login');
 });
 
 $router->get('register', function() use ($dbReady) {
@@ -174,8 +175,8 @@ $router->post('register', function() use ($dbReady) {
         return;
     }
 
-    include __DIR__ . '/../src/Controllers/AuthController.php';
-    
+    $authController = new \App\Controllers\AuthController();
+    $authController->handle('register');
 });
 
 $router->get('logout', function() {
@@ -194,7 +195,131 @@ $router->get('dashboard', function() use ($dbReady) {
     requiredLogin();
     include __DIR__ . '/../src/UI/dashboard.php';
 });
+
 // admin routes
+$router->get('user-management', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+    
+    if (!defined('INCLUDED_FROM_ROUTER')) {
+        define('INCLUDED_FROM_ROUTER', true);
+    }
+    include __DIR__ . '/../src/UI/user-management.php';
+});
+
+$router->get('pending-approvals', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+    
+    if (!defined('INCLUDED_FROM_ROUTER')) {
+        define('INCLUDED_FROM_ROUTER', true);
+    }
+    include __DIR__ . '/../src/UI/pending-approvals.php';
+});
+
+$router->get('music-approvals', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+    
+    if (!defined('INCLUDED_FROM_ROUTER')) {
+        define('INCLUDED_FROM_ROUTER', true);
+    }
+    include __DIR__ . '/../src/UI/music-approvals.php';
+});
+
+$router->post('user-action', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+
+    $action = $_POST['action'] ?? '';
+    $userController = new \App\Controllers\UserController();
+    $userController->handle($action);
+});
+
+$router->post('music-action', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+
+    $action = $_POST['action'] ?? '';
+    $musicController = new \App\Controllers\MusicController();
+    $musicController->handle($action);
+});
+
+$router->get('profile', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+    
+    if (!defined('INCLUDED_FROM_ROUTER')) {
+        define('INCLUDED_FROM_ROUTER', true);
+    }
+    include __DIR__ . '/../src/UI/profile.php';
+});
+
+$router->post('profile-action', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+
+    $action = $_POST['action'] ?? '';
+    $profileController = new \App\Controllers\UserProfileController();
+    $profileController->handle($action);
+});
+
+$router->get('discord-config', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+    
+    if (!defined('INCLUDED_FROM_ROUTER')) {
+        define('INCLUDED_FROM_ROUTER', true);
+    }
+    include __DIR__ . '/../src/UI/discord-config.php';
+});
+
+$router->post('discord-config-save', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+
+    $configController = new \App\Controllers\DiscordConfigController();
+    $configController->saveConfig();
+});
+
+// Discord OAuth routes
+$router->get('discord-login', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+
+    $discordController = new \App\Controllers\DiscordController();
+    $discordController->initiate();
+});
+
+$router->get('discord-callback', function() use ($dbReady) {
+    if (!$dbReady) {
+        redirect('?page=setup');
+        return;
+    }
+
+    $discordController = new \App\Controllers\DiscordController();
+    $discordController->callback();
+});
 
 // artist routes
 
